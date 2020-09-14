@@ -1,0 +1,22 @@
+﻿@model ReAgent.Models.Views.Order.CreateOrderVM
+
+@{
+    ViewBag.Title = "Оформление заказа";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<section id="createForm" style="max-width: 500px;">
+    @using (Html.BeginForm("Create", "Order", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "formPlain" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <div class="input">
+            @Html.LabelFor(m => m.Text)<br />
+            @Html.TextAreaFor(m => m.Text, new { @class = "formControl sm", @style = "min-height: 300px;" })
+            @Html.ValidationMessageFor(m => m.Text)
+        </div>
+        <br />
+        <input type="submit" value="Оформить заказ" class="btn btn-md btn-primary" />
+    }
+</section>

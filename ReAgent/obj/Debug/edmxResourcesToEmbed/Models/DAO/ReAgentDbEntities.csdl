@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ReAgentDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="ReAgentDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tblOrders" EntityType="ReAgentDBModel.tblOrder" />
+    <EntitySet Name="tblOrderMessages" EntityType="ReAgentDBModel.tblOrderMessage" />
+    <EntitySet Name="tblStatus" EntityType="ReAgentDBModel.tblStatu" />
+    <EntitySet Name="tblUsers" EntityType="ReAgentDBModel.tblUser" />
+    <EntitySet Name="tblUserRoles" EntityType="ReAgentDBModel.tblUserRole" />
+    <AssociationSet Name="FK_tblOrder_tblStatus" Association="ReAgentDBModel.FK_tblOrder_tblStatus">
+      <End Role="tblStatu" EntitySet="tblStatus" />
+      <End Role="tblOrder" EntitySet="tblOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblOrder_tblUser" Association="ReAgentDBModel.FK_tblOrder_tblUser">
+      <End Role="tblUser" EntitySet="tblUsers" />
+      <End Role="tblOrder" EntitySet="tblOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblOrderMessage_tblOrder" Association="ReAgentDBModel.FK_tblOrderMessage_tblOrder">
+      <End Role="tblOrder" EntitySet="tblOrders" />
+      <End Role="tblOrderMessage" EntitySet="tblOrderMessages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblUser_tblUserRole" Association="ReAgentDBModel.FK_tblUser_tblUserRole">
+      <End Role="tblUserRole" EntitySet="tblUserRoles" />
+      <End Role="tblUser" EntitySet="tblUsers" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="tblOrder">
+    <Key>
+      <PropertyRef Name="pk_id" />
+    </Key>
+    <Property Name="pk_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="details" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="fk_status" Type="Int32" Nullable="false" />
+    <Property Name="fk_user" Type="Guid" Nullable="false" />
+    <NavigationProperty Name="tblStatu" Relationship="ReAgentDBModel.FK_tblOrder_tblStatus" FromRole="tblOrder" ToRole="tblStatu" />
+    <NavigationProperty Name="tblUser" Relationship="ReAgentDBModel.FK_tblOrder_tblUser" FromRole="tblOrder" ToRole="tblUser" />
+    <NavigationProperty Name="tblOrderMessages" Relationship="ReAgentDBModel.FK_tblOrderMessage_tblOrder" FromRole="tblOrder" ToRole="tblOrderMessage" />
+  </EntityType>
+  <EntityType Name="tblOrderMessage">
+    <Key>
+      <PropertyRef Name="pk_id" />
+    </Key>
+    <Property Name="pk_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="user_name" Type="String" Nullable="false" MaxLength="110" FixedLength="false" Unicode="true" />
+    <Property Name="message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="send_date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="fk_order" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="tblOrder" Relationship="ReAgentDBModel.FK_tblOrderMessage_tblOrder" FromRole="tblOrderMessage" ToRole="tblOrder" />
+  </EntityType>
+  <EntityType Name="tblStatu">
+    <Key>
+      <PropertyRef Name="pk_id" />
+    </Key>
+    <Property Name="pk_id" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tblOrders" Relationship="ReAgentDBModel.FK_tblOrder_tblStatus" FromRole="tblStatu" ToRole="tblOrder" />
+  </EntityType>
+  <EntityType Name="tblUser">
+    <Key>
+      <PropertyRef Name="pk_id" />
+    </Key>
+    <Property Name="pk_id" Type="Guid" Nullable="false" />
+    <Property Name="email" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="first_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="last_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="password_hash" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="address" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="phone" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="verification_token" Type="Guid" />
+    <Property Name="fk_role" Type="Int32" Nullable="false" />
+    <Property Name="registration_date" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="tblOrders" Relationship="ReAgentDBModel.FK_tblOrder_tblUser" FromRole="tblUser" ToRole="tblOrder" />
+    <NavigationProperty Name="tblUserRole" Relationship="ReAgentDBModel.FK_tblUser_tblUserRole" FromRole="tblUser" ToRole="tblUserRole" />
+  </EntityType>
+  <EntityType Name="tblUserRole">
+    <Key>
+      <PropertyRef Name="pk_id" />
+    </Key>
+    <Property Name="pk_id" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tblUsers" Relationship="ReAgentDBModel.FK_tblUser_tblUserRole" FromRole="tblUserRole" ToRole="tblUser" />
+  </EntityType>
+  <Association Name="FK_tblOrder_tblStatus">
+    <End Type="ReAgentDBModel.tblStatu" Role="tblStatu" Multiplicity="1" />
+    <End Type="ReAgentDBModel.tblOrder" Role="tblOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblStatu">
+        <PropertyRef Name="pk_id" />
+      </Principal>
+      <Dependent Role="tblOrder">
+        <PropertyRef Name="fk_status" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblOrder_tblUser">
+    <End Type="ReAgentDBModel.tblUser" Role="tblUser" Multiplicity="1" />
+    <End Type="ReAgentDBModel.tblOrder" Role="tblOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblUser">
+        <PropertyRef Name="pk_id" />
+      </Principal>
+      <Dependent Role="tblOrder">
+        <PropertyRef Name="fk_user" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblOrderMessage_tblOrder">
+    <End Type="ReAgentDBModel.tblOrder" Role="tblOrder" Multiplicity="1" />
+    <End Type="ReAgentDBModel.tblOrderMessage" Role="tblOrderMessage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblOrder">
+        <PropertyRef Name="pk_id" />
+      </Principal>
+      <Dependent Role="tblOrderMessage">
+        <PropertyRef Name="fk_order" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblUser_tblUserRole">
+    <End Type="ReAgentDBModel.tblUserRole" Role="tblUserRole" Multiplicity="1" />
+    <End Type="ReAgentDBModel.tblUser" Role="tblUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblUserRole">
+        <PropertyRef Name="pk_id" />
+      </Principal>
+      <Dependent Role="tblUser">
+        <PropertyRef Name="fk_role" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

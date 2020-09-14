@@ -1,0 +1,25 @@
+﻿@model ReAgent.Models.Views.Order.OrdersVM
+
+@{
+    if (Model.IsAdmin)
+    {
+        ViewBag.Title = "Заказы";
+    }
+    else
+    {
+        ViewBag.Title = "Мои заказы";
+    }
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div style="max-height: 800px; overflow-y: scroll;">
+    @MyViewHelper.OrdersTable(Model)
+</div>
+
+@if (!Model.IsAdmin)
+{
+    <span class="addorder">
+        <a class="btn btn-primary btn-lg" href="@Url.Action("Create", "Order")">Создать заказ</a>
+    </span>
+}

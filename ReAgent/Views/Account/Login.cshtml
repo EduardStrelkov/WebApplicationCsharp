@@ -1,0 +1,37 @@
+﻿@model ReAgent.Models.Views.Account.LoginVM
+
+@{
+    ViewBag.Title = "Вход в учетную запись";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title</h1>
+</hgroup>
+
+<section id="loginForm" style="max-width: 300px;">
+    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "formPlain" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <div class="input">
+            @Html.LabelFor(m => m.Email)<br />
+            @Html.TextBoxFor(m => m.Email, new { @class = "formControl sm" })
+            @Html.ValidationMessageFor(m => m.Email)
+        </div>
+
+        <div class="input">
+            @Html.LabelFor(m => m.Password)<br />
+            @Html.PasswordFor(m => m.Password, new { @class = "formControl sm" })
+            @Html.ValidationMessageFor(m => m.Password)
+        </div>
+        <br />
+        <input type="submit" value="Выполнить вход" class="btn btn-md btn-primary" />
+        <p style="margin-top: 20px;">
+            @Html.ActionLink("Регистрация", "Register"), если у вас нет учетной записи.
+        </p>
+    }
+</section>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ReAgentDBModelStoreContainer" CdmEntityContainer="ReAgentDBEntities">
+    <EntitySetMapping Name="tblOrders">
+      <EntityTypeMapping TypeName="ReAgentDBModel.tblOrder">
+        <MappingFragment StoreEntitySet="tblOrder">
+          <ScalarProperty Name="fk_user" ColumnName="fk_user" />
+          <ScalarProperty Name="fk_status" ColumnName="fk_status" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="details" ColumnName="details" />
+          <ScalarProperty Name="pk_id" ColumnName="pk_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblOrderMessages">
+      <EntityTypeMapping TypeName="ReAgentDBModel.tblOrderMessage">
+        <MappingFragment StoreEntitySet="tblOrderMessage">
+          <ScalarProperty Name="fk_order" ColumnName="fk_order" />
+          <ScalarProperty Name="send_date" ColumnName="send_date" />
+          <ScalarProperty Name="message" ColumnName="message" />
+          <ScalarProperty Name="user_name" ColumnName="user_name" />
+          <ScalarProperty Name="pk_id" ColumnName="pk_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblStatus">
+      <EntityTypeMapping TypeName="ReAgentDBModel.tblStatu">
+        <MappingFragment StoreEntitySet="tblStatus">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="pk_id" ColumnName="pk_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUsers">
+      <EntityTypeMapping TypeName="ReAgentDBModel.tblUser">
+        <MappingFragment StoreEntitySet="tblUser">
+          <ScalarProperty Name="registration_date" ColumnName="registration_date" />
+          <ScalarProperty Name="fk_role" ColumnName="fk_role" />
+          <ScalarProperty Name="verification_token" ColumnName="verification_token" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="password_hash" ColumnName="password_hash" />
+          <ScalarProperty Name="last_name" ColumnName="last_name" />
+          <ScalarProperty Name="first_name" ColumnName="first_name" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="pk_id" ColumnName="pk_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUserRoles">
+      <EntityTypeMapping TypeName="ReAgentDBModel.tblUserRole">
+        <MappingFragment StoreEntitySet="tblUserRole">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="pk_id" ColumnName="pk_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

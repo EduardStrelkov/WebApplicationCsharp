@@ -1,0 +1,59 @@
+﻿@model ReAgent.Models.Views.Account.UserVM
+@{
+    ViewBag.Title = "Редактировать данные пользователя";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title</h1>
+</hgroup>
+
+@if (ViewBag.Message != null)
+{
+    <h3 style="color: #27C158;">@ViewBag.Message</h3>
+}
+
+<section id="loginForm" style="max-width: 300px;">
+    @using (Html.BeginForm("UserEdit", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "formPlain" }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(x => x.UserId)
+
+        <div class="input">
+            @Html.LabelFor(m => m.FirstName)<br />
+            @Html.TextBoxFor(m => m.FirstName, new { @class = "formControl sm" })
+            @Html.ValidationMessageFor(m => m.FirstName)
+        </div>
+
+        <div class="input">
+            @Html.LabelFor(m => m.LastName)<br />
+            @Html.TextBoxFor(m => m.LastName, new { @class = "formControl sm" })
+            @Html.ValidationMessageFor(m => m.LastName)
+        </div>
+
+        <div class="input">
+            @Html.LabelFor(m => m.Email)<br />
+            @Html.TextBoxFor(m => m.Email, new { @class = "formControl sm" })
+            @Html.ValidationMessageFor(m => m.Email)
+        </div>
+
+        <div class="input">
+            @Html.LabelFor(m => m.Address)<br />
+            @Html.TextBoxFor(m => m.Address, new { @class = "formControl sm" })
+            @Html.ValidationMessageFor(m => m.Address)
+        </div>
+        <div class="input">
+            @Html.LabelFor(m => m.Phone)<br />
+            @Html.TextBoxFor(m => m.Phone, new { @class = "formControl sm" })
+            @Html.ValidationMessageFor(m => m.Phone)
+        </div>
+
+        @Html.ValidationSummary(true)
+        <br />
+        <input type="submit" value="Сохранить" class="btn btn-md btn-primary" />
+    }
+</section>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

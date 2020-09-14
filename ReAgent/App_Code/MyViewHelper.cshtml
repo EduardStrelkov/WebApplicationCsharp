@@ -1,0 +1,75 @@
+﻿@helper OrdersTable(ReAgent.Models.Views.Order.OrdersVM orders)
+{
+    <table class="lined hover" style="width: 100%;">
+        <tbody>
+            @foreach (var order in orders.Orders)
+            {
+                <tr>
+                    <td><strong>Заказ:<br /><a href="/Order/Chat?chatId=@order.Id">№ @order.Id</a></strong></td>
+
+                    @if (orders.IsAdmin)
+                    {
+                        <td><strong>Заказчик:<br /></strong>@order.UserName</td>
+                    }
+
+                    <td><strong>Создан:<br /></strong>@order.Date.ToString("dd.MM.yyyy")</td>
+                    <td style="min-width: 270px;"><strong>Описание:<br /></strong>@order.Text</td>
+                    <td style="min-width: 60px;"><strong>Статус:<br /></strong>@GetStatus(order.Status)</td>
+
+                    @if (orders.IsAdmin)
+                    {
+                        <td>
+                            <strong>Действия: </strong>
+
+                            @if (order.Status != ReAgent.Models.Enums.OrderStatus.Accepted)
+                            {
+                                <a href="/Order/ChangeStatus/@(order.Id)?status=Accepted">Принять</a><br />
+                            }
+                            @if (order.Status != ReAgent.Models.Enums.OrderStatus.Canceled)
+                            {
+                                <a href="/Order/ChangeStatus/@(order.Id)?status=Canceled">Отклонить</a><br />
+                            }
+                            @if (order.Status != ReAgent.Models.Enums.OrderStatus.InProgress)
+                            {
+                                <a href="/Order/ChangeStatus/@(order.Id)?status=InProgress">В работу</a><br />
+                            }
+                            @if (order.Status != ReAgent.Models.Enums.OrderStatus.Completed)
+                            {
+                                <a href="/Order/ChangeStatus/@(order.Id)?status=Completed">Завершить</a>
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@functions {
+
+    public static string GetStatus(ReAgent.Models.Enums.OrderStatus status)
+    {
+        var result = "";
+
+        switch (status)
+        {
+            case ReAgent.Models.Enums.OrderStatus.New:
+                result = "Новый";
+                break;
+            case ReAgent.Models.Enums.OrderStatus.Accepted:
+                result = "Принят";
+                break;
+            case ReAgent.Models.Enums.OrderStatus.Canceled:
+                result = "Отменен";
+                break;
+            case ReAgent.Models.Enums.OrderStatus.InProgress:
+                result = "В работе";
+                break;
+            case ReAgent.Models.Enums.OrderStatus.Completed:
+                result = "Выполнен";
+                break;
+        }
+
+        return result;
+    }
+}

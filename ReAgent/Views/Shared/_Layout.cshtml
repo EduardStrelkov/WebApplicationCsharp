@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="headerContainer container_12">
+        <div class="headerWrapper">
+            <div class="headerImage headerBackgroundOff">
+                <div class="logoAndInfoWrapper">
+                    <div class="contactInfoPlace">
+                        <div class="text content">
+                            <p>
+                                <strong>Адрес:</strong><br>
+                                г. Астана, ул. Илияса Есенберлина, 36, оф. 13<br>
+                                <strong>Телефон:</strong><br>
+                                +7-7172-78-01-75<br>
+                                <br />
+                                <span style="font-size:8px;">
+                                    <a class="btn btn-primary btn-lg" href="@Url.Action("Create", "Order")">
+                                        Заказать рекламу
+                                    </a>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="logo">
+                        <a href="/" class="logo-link"><img src="~/Content/images/logo.jpg" border="0" alt="" title=""></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mainMenu mainMenuStyleS19 mainMenuPullDown menuFloat clearfix">
+            <ul>
+                <li class="item hasChildren first">
+                    <a href="@Url.Action("About", "Home")">О нас</a>
+                    <ul style="display: none;">
+                        <li><a href="@Url.Action("Requisites", "Home")">Реквизиты</a></li>
+                    </ul>
+                </li>
+                <li class="item hasChildren">
+                    <a href="@Url.Action("Service", "Home", new { id = (string)null })">Услуги</a>
+                    <ul style="display: none;">
+                        <li><a href="@Url.Action("Service", "Home", new { id = "transport" })">Реклама в транспорте</a></li>
+                        <li><a href="@Url.Action("Service", "Home", new { id = "street" })">Наружная реклама</a></li>
+                        <li><a href="@Url.Action("Service", "Home", new { id = "promo" })">BTL. Промо-акции</a></li>
+                        <li><a href="@Url.Action("Service", "Home", new { id = "agency" })">Агентство полного цикла</a></li>
+                        <li><a href="@Url.Action("Service", "Home", new { id = "specproject" })">Спецпроекты</a></li>
+                        <li><a href="@Url.Action("Service", "Home", new { id = "massmedia" })">Реклама в СМИ</a></li>
+                        <li><a href="@Url.Action("Service", "Home", new { id = "internet" })">Реклама в интернете</a></li>
+                        <li><a href="@Url.Action("Service", "Home", new { id = "cinema" })">Реклама в кинотеатрах</a></li>
+                    </ul>
+                </li>
+                <li class="item hasChildren">
+                    <a href="@Url.Action("Contact", "Home")">Контакты</a>
+                </li>
+
+                @*TODO: добавить Identity service*@
+                @{
+                    bool isAdmin = false;
+                    var user = ReAgent.App_Start.UnityConfig.ResolveDependency<ReAgent.Services.API.IAccountServ>().GetUserByStrId(Context.User.Identity.Name); //Primer Dependency Injection  
+
+                    if (user != null)
+                    {
+                        isAdmin = user.Role == ReAgent.Models.Enums.UserRole.Admin;
+                    }
+                }
+
+                @if (Context.User.Identity.IsAuthenticated)
+                {
+                    if (isAdmin)
+                    {
+                        <li class="item hasChildren">
+                            <a href="@Url.Action("Index", "Order")">Заказы</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="item hasChildren">
+                            <a href="@Url.Action("Index", "Order")">Мои заказы</a>
+                        </li>
+                    }
+
+                    <li class="item hasChildren">
+                        <a href="@Url.Action("LogOff", "Account")">Выйти</a>
+                    </li>
+                    <li id="login">
+                        <a href="@Url.Action("UserEdit", "Account")">
+                            Привет, <span>@(user != null ? String.Format("{0} {1}", user.FirstName, user.LastName) : "Пользователь")</span>@(isAdmin ? " (Администратор)" : "").
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="item hasChildren">
+                        <a href="@Url.Action("Create", "Order")">Заказать</a>
+                    </li>
+                    <li class="item hasChildren">
+                        <a href="@Url.Action("Register", "Account")">Регистрация</a>
+                    </li>
+                    <li class="item hasChildren">
+                        <a href="@Url.Action("Login", "Account")">Войти в профиль</a>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="clear">&nbsp;</div>
+    </div>
+    <div class="container container_12">
+        <div class="grid_3 columnNarrow">
+            <div class="wgYandexMap wgOpen">
+                <img src="~/Content/images/map.jpg" width="220" height="220" alt="">
+            </div>
+            <div class="wgFirmattributes wgClose" itemscope="" itemtype="http://schema.org/Organization">
+                <p><strong><span itemprop="name">«РеАгент»</span></strong></p>
+                <p><span itemprop="address"> г.&nbsp;Астана, ул. Илияса Есенберлина, 36, оф. 13</span></p>
+                <p><strong>Телефон</strong><span itemprop="telephone"> +7-7172-78-01-75</span></p>
+                <p><strong>Факс</strong><span itemprop="faxNumber"> 78-01-75</span></p>
+                <p>
+                    <strong>E-mail:</strong><span itemprop="email">
+                        <a href="mailto:info_ast@mail.ru">info_ast@mail.ru</a>
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="grid_9 columnWide">
+            <div class="columnWidePadding">
+                <div class="content">
+                    @if (TempData["Notify"] != null)
+                    {
+                        var notify = ((ReAgent.Models.Views.Order.NotifyVM)TempData["Notify"]);
+
+                        if (notify != null)
+                        {
+                            var text = notify.Text;
+                            var countOrders = notify.CountOrders;
+
+                            if (countOrders != 0)
+                            {
+                                <div id="notifyPanel">
+                                    <span>@text @countOrders</span>
+                                </div>
+                            }
+                        }
+                    }
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+        <div class="clear">&nbsp;</div>
+    </div>
+
+    <div class="footer">
+        <div class="container clearfix">
+            <div class="copyright">
+                <p>ООО «РеАгент», 2020 г.</p>
+            </div>
+            <div class="counters">
+            </div>
+            <div class="clear">&nbsp;</div>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+
+    @Scripts.Render("~/bundles/site")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,30 @@
+﻿@using Mvc.Mailer
+@model string
+
+<table border="0" cellpadding="0" cellspacing="0" style="width:650px; padding: 25px 35px 25px 35px; color: #000000; font-size: 12px; font-family: Tahoma, Helvetica, sans-serif;">
+    <tr>
+        <td>
+            @Html.InlineImage("reagent-logo", "ReAgent")
+        </td>
+    </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style="width:650px; padding: 25px 35px 20px 35px; color: #000000; font-size: 12px; font-family: Tahoma, Helvetica, sans-serif;">
+    <tr>
+        <td>
+            Добрый день,
+        </td>
+    </tr>
+    <tr>
+        <td>
+            пожалуйста верифицируйте ваш e-mail по ссылке:<br />
+            <a href="@Mvc.Mailer.UrlHelperExtensions.Abs(Url, Url.Action("VerifyUser", "Account", new { token = this.Model }))">Подтвердить</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Спасибо,
+            Ваш ReAgent
+        </td>
+    </tr>
+
+</table>

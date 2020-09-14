@@ -1,0 +1,69 @@
+﻿@model ReAgent.Models.Views.Order.ChatVM
+
+@{
+    ViewBag.Title = "Заказ номер " + Model.ChatId;
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="reagent-chat">
+    <input type="hidden" id="displayname" />
+    <input class="formControl sm" type="text" id="message" />
+    <input class="btn btn-md btn-primary" type="button" id="sendmessage" value="Отправить сообщение" />
+    <ul id="discussion">
+        @foreach (var msg in Model.MessageHistory)
+        {
+            <li><strong>@msg.UserName</strong>: @msg.Message</li>
+        }
+    </ul>
+</div>
+
+@section scripts {
+<!--https://docs.microsoft.com/en-us/aspnet/signalr/overview/getting-started/tutorial-getting-started-with-signalr-and-mvc-->
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+<!--Ссылка на сгенерированный SignalR хаб скрипт. -->
+<script src="~/signalr/hubs"></script>
+<script>
+    $(function () {
+        var actChatId = '@Model.ChatId';
+
+        var prevNameVal;
+        var prevMsgVal;
+
+        // Ссылка на сгенерированный прокси для хаба.
+        var chat = $.connection.chatHub;
+        // Создание функции для отправки сообщения.
+        chat.client.addNewMessageToPage = function (chatId, name, message) {
+            if (actChatId == chatId) {
+                var nameVal = htmlEncode(name);
+                var msgVal = htmlEncode(message);
+
+                $('#discussion').append('<li><strong>' + nameVal
+                    + '</strong>: ' + msgVal + '</li>');
+            }
+        };
+
+        $('#displayname').val('@Model.UserName');
+        $('#message').focus();
+
+        // Запуск соеденения.
+        $.connection.hub.start().done(function () {
+            $('#sendmessage').click(function () {
+                // Вызов метода отправки в хабе.
+                prevNameVal = $('#displayname').val();
+                prevMsgVal = $('#message').val();
+                chat.server.send(actChatId, prevNameVal, prevMsgVal);
+                // Стираем поле ввода и перенаставляем фокус.
+                $('#message').val('').focus();
+            });
+        });
+    });
+
+    function htmlEncode(value) {
+        var encodedValue = $('<div />').text(value).html();
+        return encodedValue;
+        }
+
+</script>
+}
